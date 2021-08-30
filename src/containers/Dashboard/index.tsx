@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,16 +6,16 @@ import {
   TouchableOpacity,
   Modal,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 
 import styles from './styles';
-import {GlobalStats, CountryStats} from '../../components';
+import {GlobalStats, CountryStats, LoaderVIew} from '../../components';
 import {NavigationService, DataHandler} from '../../utils';
 import ReportCase from '../../modals/ReportCase';
+import {useQuery} from 'react-query';
 
 const Dashboard = ({navigation}) => {
-  const modalRef = useRef<Modal>(null);
-
   navigation?.setOptions({
     headerRight: () => <HeaderRight />,
   });
@@ -60,6 +60,18 @@ const Dashboard = ({navigation}) => {
       </View>
     );
   };
+
+  const {isLoading, error, data} = useQuery('repoData', () =>
+    fetch('https://api.covid19api.com/summary').then(res => res.json()),
+  );
+
+  if (isLoading) {
+    return <LoaderVIew />;
+  }
+
+  if (error) return <Text>{`An error has occurred: ${error.message}`}</Text>;
+
+  console.log('data', data);
 
   return (
     <>

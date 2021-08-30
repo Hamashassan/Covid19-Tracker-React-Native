@@ -20,4 +20,26 @@ export default StyleSheet.create({
     fontFamily: Fonts.type.bold,
     fontSize: 25,
   },
+
+  caseTypeContainer: {
+    marginTop: 20,
+  },
+
+  subTitle: {
+    color: '#fff',
+    fontFamily: Fonts.type.bold,
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  submitBtn: {
+    backgroundColor: '#272b3b',
+    alignItems: 'center',
+    paddingVertical: 15,
+    borderRadius: 10,
+    marginVertical: 20,
+  },
+  btnText: {
+    color: '#fff',
+    fontFamily: Fonts.type.regular,
+  },
 });
