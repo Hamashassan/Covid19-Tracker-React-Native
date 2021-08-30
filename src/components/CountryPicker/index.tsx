@@ -1,15 +1,14 @@
-import React, {useState} from 'react';
-import {View, Text} from 'react-native';
 import CountryPicker, {DARK_THEME} from 'react-native-country-picker-modal';
-import {screenWidth} from '../../config/Constants';
+import React, {useState} from 'react';
+
 import styles from './styles';
 
-const CountryPickerInput = () => {
+const CountryPickerInput = ({onSelectCountry}) => {
   const [countryCode, setCountryCode] = useState<CountryCode>('AE');
-  const [country, setCountry] = useState<Country>(null);
+
   const onSelect = (country: Country) => {
     setCountryCode(country.cca2);
-    setCountry(country);
+    onSelectCountry(country);
   };
 
   return (

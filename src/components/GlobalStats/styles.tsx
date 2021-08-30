@@ -62,7 +62,8 @@ export default StyleSheet.create({
     marginTop: 15,
   },
   stats: (title: string) => ({
-    backgroundColor: title === 'Deaths' ? '#DC3545' : '#28A745',
+    backgroundColor:
+      title === 'Deaths' || title === 'New Deaths' ? '#DC3545' : '#28A745',
     flex: 1,
     paddingHorizontal: 20,
     paddingVertical: 20,

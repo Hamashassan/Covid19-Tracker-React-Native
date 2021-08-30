@@ -3,8 +3,8 @@ import React from 'react';
 
 import {FilterModal, ReportCase} from './modals';
 import AppNavigator from './navigator';
-import {DataHandler} from './utils';
 import {StatusBar} from 'react-native';
+import {DataHandler} from './utils';
 import {Colors} from './theme';
 
 const queryClient = new QueryClient();

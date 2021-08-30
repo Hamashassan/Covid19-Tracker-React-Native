@@ -1,18 +1,28 @@
 import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 import {Modalize} from 'react-native-modalize';
-import {screenHeight} from '../../config/Constants';
-import styles from './styles';
+
 import {CountryPicker, CaseTypeSelection, ModalHeader} from '../../components';
+import {useStore} from '../../store';
+import styles from './styles';
 
 const ReportCase = forwardRef(({}, ref) => {
   const modalizeRef = useRef<Modalize>(null);
-  const [caseType, setCaseType] = useState(null);
+  const [caseType, setCaseType] = useState('Active');
+  const [country, setCountry] = useState('AE');
 
-  const onSubmitPress = () => {};
+  const reportCase = useStore(state => state.reportCase);
+
+  const onSubmitPress = () => {
+    reportCase({caseType, country, cb: closeModal});
+  };
 
   const onSelectCase = c => {
     setCaseType(c);
+  };
+
+  const onSelectCountry = ({cca2}) => {
+    setCountry(cca2);
   };
 
   const openModal = () => {
@@ -31,7 +41,7 @@ const ReportCase = forwardRef(({}, ref) => {
     return (
       <View style={styles.countryPickerContainer}>
         <Text style={styles.subTitle}>Select Country</Text>
-        <CountryPicker />
+        <CountryPicker onSelectCountry={onSelectCountry} />
       </View>
     );
   };

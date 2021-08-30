@@ -8,6 +8,9 @@ export default StyleSheet.create({
     backgroundColor: Colors.background,
     paddingTop: 20,
   },
+  contentContainerStyle: {
+    paddingBottom: 100,
+  },
   contentContainer: {},
   date: {
     color: Colors.white,

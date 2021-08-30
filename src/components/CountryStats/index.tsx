@@ -1,21 +1,25 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styles from './styles';
-import {NavigationService} from '../../utils';
+import {NavigationService, Util} from '../../utils';
 
-const CountryStats = () => {
+const CountryStats = ({data}) => {
+  const {CountryCode, Country, TotalConfirmed, TotalDeaths} = data;
+
   const renderFlag = () => (
     <Image
       style={styles.flag}
-      source={{uri: 'https://www.countryflags.io/us/shiny/64.png'}}
+      source={{uri: `https://www.countryflags.io/${CountryCode}/shiny/64.png`}}
     />
   );
 
   const renderLeftDetail = () => {
     return (
       <View style={styles.leftContainer}>
-        <Text style={styles.country}>USA</Text>
-        <Text style={styles.totalCases}>74,143,201</Text>
+        <Text style={styles.country}>{Country}</Text>
+        <Text style={styles.totalCases}>
+          {Util.numberWithCommas(TotalConfirmed)}
+        </Text>
       </View>
     );
   };
@@ -23,7 +27,9 @@ const CountryStats = () => {
   const renderRightDetail = () => {
     return (
       <View style={styles.rightContainer}>
-        <Text style={styles.totalCases}>74,143,201</Text>
+        <Text style={styles.totalCases}>
+          {Util.numberWithCommas(TotalDeaths)}
+        </Text>
       </View>
     );
   };
@@ -39,7 +45,7 @@ const CountryStats = () => {
 
   return (
     <TouchableOpacity
-      onPress={() => NavigationService.navigate('Country')}
+      onPress={() => NavigationService.navigate('Country', {data})}
       style={styles.container}>
       {renderFlag()}
       {renderDetails()}

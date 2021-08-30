@@ -1,24 +1,19 @@
-import React, {useEffect} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Modal,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
-
-import styles from './styles';
-import {GlobalStats, CountryStats, LoaderVIew} from '../../components';
-import {NavigationService, DataHandler} from '../../utils';
-import ReportCase from '../../modals/ReportCase';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import {useQuery} from 'react-query';
+import React from 'react';
+
+import {GlobalStats, CountryStats, LoaderVIew} from '../../components';
+import {NavigationService, DataHandler, Util} from '../../utils';
+import {useStore} from '../../store/index';
+import styles from './styles';
 
 const Dashboard = ({navigation}) => {
   navigation?.setOptions({
     headerRight: () => <HeaderRight />,
   });
+
+  const Global = useStore(state => state?.summary?.data?.Global);
+  const Countries = useStore(state => state?.summary?.data?.Countries);
 
   const onSeeAllPress = () => {
     NavigationService.navigate('Countries');
@@ -36,7 +31,8 @@ const Dashboard = ({navigation}) => {
     );
   };
 
-  const TopCountries = () => {
+  const TopCountries = ({data}) => {
+    const topCountries = Util.getTopCountries(data);
     return (
       <View style={styles.topCountries}>
         <View style={styles.topCountriesTitleContainer}>
@@ -45,18 +41,20 @@ const Dashboard = ({navigation}) => {
             <Text style={styles.seeAll}>See All</Text>
           </TouchableOpacity>
         </View>
-        {[1, 2, 3, 4, 5].map((item, index) => (
-          <CountryStats key={index} />
+        {topCountries.map((item, index) => (
+          <CountryStats data={item} key={index} />
         ))}
       </View>
     );
   };
 
   const renderContent = () => {
+    // const Countries = useStore(state => state?.summary?.data?.Countries);
+
     return (
       <View style={styles.contentContainer}>
-        <GlobalStats />
-        <TopCountries />
+        <GlobalStats data={Global} />
+        <TopCountries data={Countries} />
       </View>
     );
   };
@@ -65,18 +63,21 @@ const Dashboard = ({navigation}) => {
     fetch('https://api.covid19api.com/summary').then(res => res.json()),
   );
 
+  const setSummary = useStore(state => state.setSummary);
+  setSummary(data);
+
   if (isLoading) {
     return <LoaderVIew />;
   }
 
   if (error) return <Text>{`An error has occurred: ${error.message}`}</Text>;
 
-  console.log('data', data);
-
   return (
-    <>
-      <ScrollView style={styles.container}>{renderContent()}</ScrollView>
-    </>
+    <ScrollView
+      contentContainerStyle={styles.contentContainerStyle}
+      style={styles.container}>
+      {renderContent()}
+    </ScrollView>
   );
 };
 

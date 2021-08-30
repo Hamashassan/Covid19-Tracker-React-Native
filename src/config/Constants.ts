@@ -1,5 +1,7 @@
 import {Dimensions} from 'react-native';
 
+export const BASE_URL = 'https://api.covid19api.com';
+
 const {width, height} = Dimensions.get('window');
 export const screenWidth = width;
 export const screenHeight = height;

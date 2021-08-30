@@ -1,3 +1,4 @@
 import NavigationService from './NavigationService';
 import DataHandler from './DataHandler';
-export {NavigationService, DataHandler};
+import Util from './Util';
+export {NavigationService, DataHandler, Util};

@@ -109,13 +109,26 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import styles from './styles';
+import moment from 'moment';
+import {Util} from '../../utils';
 
-const GlobalStats = () => {
+const GlobalStats = ({data}) => {
+  // const summary = useStore(state => state.summary.data.Global);
+  const {
+    TotalConfirmed,
+    TotalDeaths,
+    TotalRecovered,
+    NewDeaths,
+    NewRecovered,
+    Date,
+  } = data;
+  // const summary = useStore(state => state.summary.data.Global);
+  // const {TotalConfirmed, TotalDeaths, TotalRecovered} = summary;
   const renderStats = (title: string, count: string) => {
     return (
       <View style={styles.stats(title)}>
         <Text style={styles.statsTitle}>{title}</Text>
-        <Text style={styles.statsCount}>{count}</Text>
+        <Text style={styles.statsCount}>{Util.numberWithCommas(count)}</Text>
       </View>
     );
   };
@@ -124,13 +137,18 @@ const GlobalStats = () => {
 
   return (
     <View style={styles.contentContainer}>
-      <Text style={styles.date}>Apr 28 2020, 12:11 PM</Text>
+      <Text style={styles.date}>{moment(Date).format('DD MMMM YYYY')}</Text>
       <Text style={styles.title}>Carona Virus Cases</Text>
-      <Text style={styles.count}>23,2450,035</Text>
+      <Text style={styles.count}>{Util.numberWithCommas(TotalConfirmed)}</Text>
       <View style={styles.statsContainer}>
-        {renderStats('Deaths', '243,567')}
+        {renderStats('Deaths', TotalDeaths)}
         {renderSeperator()}
-        {renderStats('Recovered', '43,567')}
+        {renderStats('Recovered', TotalRecovered)}
+      </View>
+      <View style={styles.statsContainer}>
+        {renderStats('New Recovered', NewRecovered)}
+        {renderSeperator()}
+        {renderStats('New Deaths', NewDeaths)}
       </View>
     </View>
   );

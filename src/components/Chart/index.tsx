@@ -1,30 +1,26 @@
-import React from 'react';
-import {View, Text} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
-import styles from './styles';
+import {View, Text} from 'react-native';
+import React from 'react';
+
 import {chartConfig, screenWidth} from '../../config/Constants';
+import {Util} from '../../utils';
+import styles from './styles';
 
-const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-  datasets: [
-    {
-      data: [
-        Math.random() * 100,
-        Math.random() * 100,
-        Math.random() * 100,
-        Math.random() * 100,
-        Math.random() * 100,
-        Math.random() * 100,
-      ],
-    },
-  ],
-};
+const Chart = ({data}) => {
+  const chartData = {
+    datasets: [
+      {
+        data: data
+          ? Util.formatChartData(data)
+          : [Math.random() * 100, Math.random() * 100, Math.random() * 100],
+      },
+    ],
+  };
 
-const Chart = () => {
   const RenderChart = () => {
     return (
       <LineChart
-        data={data}
+        data={chartData}
         width={screenWidth - 40}
         height={240}
         yAxisSuffix="k"
@@ -42,7 +38,7 @@ const Chart = () => {
   const RenderTitle = () => {
     return (
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Stats</Text>
+        <Text style={styles.title}>Statistics by last days</Text>
       </View>
     );
   };

@@ -9,7 +9,7 @@ export default StyleSheet.create({
     backgroundColor: '#1d212f',
   },
   titleContainer: {
-    marginTop: 10,
+    marginTop: 20,
     flexDirection: 'row',
   },
   title: {

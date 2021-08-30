@@ -1,22 +1,53 @@
-import React from 'react';
-import {View, Text, FlatList} from 'react-native';
-import styles from './styles';
+import {View, FlatList} from 'react-native';
+import React, {useState} from 'react';
+
 import {SearchInput, CountryStats} from '../../components';
-import {DataHandler} from '../../utils';
+import {DataHandler, Util} from '../../utils';
+import {useStore} from '../../store/index';
+import styles from './styles';
 
 const Countries = () => {
-  const onFilterPress = () => {
-    DataHandler.getFilterModalRef().open();
+  const [filteredData, setFilteredData] = useState([]);
+  const [filteredBy, setfilteredBy] = useState(null);
+  const [searchText, setSearchText] = useState('');
+
+  const countries = useStore(state => state.summary.data.Countries);
+
+  const onSelectFilter = val => {
+    setSearchText('');
+    setfilteredBy(Util.getFilterValue(val));
   };
+
+  const onFilterPress = () => {
+    DataHandler.getFilterModalRef().open(onSelectFilter);
+  };
+
+  const onSearchText = (text: string) => {
+    setSearchText(text);
+    let filtered = countries.filter((item: Object) => {
+      return item?.Country.includes(searchText);
+    });
+    text !== '' ? setFilteredData(filtered) : setFilteredData([]);
+  };
+
+  const data =
+    filteredData.length > 0
+      ? filteredData
+      : filteredBy !== ''
+      ? Util.filterDataBy(countries, filteredBy)
+      : countries;
 
   return (
     <View style={styles.container}>
-      <SearchInput onFilterPress={onFilterPress} />
+      <SearchInput onChangeText={onSearchText} onFilterPress={onFilterPress} />
       <FlatList
         showsVerticalScrollIndicator={false}
         style={styles.list}
-        data={[1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]}
-        renderItem={() => <CountryStats />}
+        extraData={filteredData}
+        data={data}
+        onEndReachedThreshold={0}
+        keyExtractor={(_, index) => index.toString()}
+        renderItem={({item}) => <CountryStats data={item} />}
       />
     </View>
   );
