@@ -63,6 +63,8 @@ const Dashboard = ({navigation}) => {
     fetch('https://api.covid19api.com/summary').then(res => res.json()),
   );
 
+  console.log('data', data);
+
   const setSummary = useStore(state => state.setSummary);
   setSummary(data);
 

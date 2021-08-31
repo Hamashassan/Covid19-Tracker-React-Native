@@ -7,7 +7,7 @@ import styles from './styles';
 
 const FilterModal = forwardRef(({}, ref) => {
   const modalizeRef = useRef<Modalize>(null);
-  const [caseType, setCaseType] = useState(null);
+  const [caseType, setCaseType] = useState<string>('');
   const [onSelect, setOnSelect] = useState({});
 
   const onSubmitPress = () => {

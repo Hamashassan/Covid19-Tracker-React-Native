@@ -3,7 +3,11 @@ import React, {useState} from 'react';
 
 import styles from './styles';
 
-const CountryPickerInput = ({onSelectCountry}) => {
+export type Props = {
+  onSelectCountry: (key: string) => void;
+};
+
+const CountryPickerInput: React.FC<Props> = ({onSelectCountry}) => {
   const [countryCode, setCountryCode] = useState<CountryCode>('AE');
 
   const onSelect = (country: Country) => {

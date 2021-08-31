@@ -1,13 +1,11 @@
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-
+import {Image, View} from 'react-native';
 import * as React from 'react';
 
-import {NavigationService} from '../utils';
 import {Dashboard, Countries, Country} from '../containers';
 import {Colors, AppStyles, Images} from '../theme';
-import {HeaderRight} from '../components';
-import {Image, View} from 'react-native';
+import {NavigationService} from '../utils';
 
 const Stack = createStackNavigator();
 

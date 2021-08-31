@@ -112,8 +112,11 @@ import styles from './styles';
 import moment from 'moment';
 import {Util} from '../../utils';
 
-const GlobalStats = ({data}) => {
-  // const summary = useStore(state => state.summary.data.Global);
+export type Props = {
+  data: GlobalStats;
+};
+
+const GlobalStats: React.FC<Props> = ({data}) => {
   const {
     TotalConfirmed,
     TotalDeaths,
@@ -122,9 +125,8 @@ const GlobalStats = ({data}) => {
     NewRecovered,
     Date,
   } = data;
-  // const summary = useStore(state => state.summary.data.Global);
-  // const {TotalConfirmed, TotalDeaths, TotalRecovered} = summary;
-  const renderStats = (title: string, count: string) => {
+
+  const renderStats = (title: string, count: number) => {
     return (
       <View style={styles.stats(title)}>
         <Text style={styles.statsTitle}>{title}</Text>

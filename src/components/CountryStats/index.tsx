@@ -1,9 +1,14 @@
-import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import styles from './styles';
-import {NavigationService, Util} from '../../utils';
+import React from 'react';
 
-const CountryStats = ({data}) => {
+import {NavigationService, Util} from '../../utils';
+import styles from './styles';
+
+export type Props = {
+  data: Country;
+};
+
+const CountryStats: React.FC<Props> = ({data}) => {
   const {CountryCode, Country, TotalConfirmed, TotalDeaths} = data;
 
   const renderFlag = () => (

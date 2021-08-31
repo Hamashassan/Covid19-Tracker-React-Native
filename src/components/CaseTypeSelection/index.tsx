@@ -4,7 +4,14 @@ import React from 'react';
 
 const defaultData = ['Active', 'Death', 'Recovery'];
 
-const CaseTypeSelection = ({
+export type Props = {
+  onSelect: (key: string) => void;
+  selected?: string | number;
+  data: string[] | number[];
+  postfix?: string;
+};
+
+const CaseTypeSelection: React.FC<Props> = ({
   onSelect,
   selected,
   data = defaultData,
@@ -12,10 +19,11 @@ const CaseTypeSelection = ({
 }) => {
   return (
     <View style={styles.container}>
-      {data.map(item => {
+      {data.map((item, index) => {
         const style = selected === item ? {borderColor: '#f7f9ff'} : {};
         return (
           <TouchableOpacity
+            key={index}
             onPress={() => onSelect(item)}
             style={[styles.btnContainer, style]}>
             <Text style={styles.text}>
