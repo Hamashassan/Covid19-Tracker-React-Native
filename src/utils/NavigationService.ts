@@ -1,12 +1,12 @@
 import {StackActions, CommonActions} from '@react-navigation/native';
 
-let _navigator;
+let _navigator: any;
 
 function setTopLevelNavigator(navigatorRef: any) {
   _navigator = navigatorRef;
 }
 
-function navigate(routeName: any, params: any) {
+function navigate(routeName: any, params?: any) {
   _navigator.navigate(routeName, params);
 }
 
@@ -31,13 +31,6 @@ function getNavigator() {
 }
 
 function reset(routeName: any) {
-  // _navigator.dispatch(
-  //   StackActions.reset({
-  //     index: 0,
-  //     actions: [NavigationActions.navigate({ routeName })],
-  //   }),
-  // );
-
   const resetAction = CommonActions.reset({
     index: 0,
     routes: [{name: routeName}],
@@ -52,8 +45,6 @@ function getCurrentRoute() {
   }
   return route.routeName;
 }
-
-// add other navigation functions that you need and export them
 
 export default {
   replace,

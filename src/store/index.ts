@@ -1,21 +1,31 @@
 import create from 'zustand';
 import {Util} from '../utils';
 
-export const useStore = create(set => ({
+interface StoreState {
+  summary: {};
+  setSummary: (data: Summary) => void;
+  reportCase: (data: {
+    country: string;
+    caseType: string;
+    cb: () => void;
+  }) => void;
+}
+
+export const useStore = create<StoreState>(set => ({
   summary: {},
-  setSummary: data => set(state => ({summary: {...state.summary, data}})),
+  setSummary: data => set(state => ({summary: {...state.summary, ...data}})),
   reportCase: data => {
     const {country, caseType, cb} = data;
 
     const type = Util.getFilterValue(caseType);
 
     set(state => {
-      const countries = state.summary.data.Countries;
+      const countries = state?.summary?.Countries;
 
-      const global = state.summary.data.Global;
+      const global = state?.summary?.Global;
 
       const filteredCountry = countries.filter(
-        item => item.CountryCode === country,
+        (item: Country) => item.CountryCode === country,
       )[0];
 
       const updatedCountry = {
@@ -23,7 +33,9 @@ export const useStore = create(set => ({
         [type]: filteredCountry[type] + 1,
       };
 
-      const index = countries.findIndex(item => item.CountryCode === country);
+      const index = countries.findIndex(
+        (item: Country) => item.CountryCode === country,
+      );
 
       countries[index] = updatedCountry;
       global[type] = global[type] + 1;
@@ -33,10 +45,7 @@ export const useStore = create(set => ({
       return {
         summary: {
           ...state.summary,
-          data: {
-            ...state.summary.data,
-            Countries: [...state.summary.data.Countries],
-          },
+          Countries: [...state.summary.Countries],
         },
       };
     });

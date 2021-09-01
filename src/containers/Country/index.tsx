@@ -1,45 +1,57 @@
-import {useQuery, useQueryClient} from 'react-query';
+import {useQueryClient} from 'react-query';
 import {ScrollView} from 'react-native';
 import React, {useState} from 'react';
 import moment from 'moment';
 
 import {GlobalStats, Chart, CaseTypeSelection} from '../../components';
-import {BASE_URL} from '../../config/Constants';
+
 import styles from './styles';
+import {useCountryBy, fetchStats} from '../../hooks/useCountryBy';
 
-const Country = ({navigation, route}) => {
-  const queryClient = useQueryClient();
+type Props = {
+  navigation: object;
+  route: object;
+};
 
+const Country: React.FC<Props> = ({navigation, route}) => {
   const country = route?.params?.data;
-  const [duration, setDuration] = useState(15);
-  var d = new Date();
-  d.setDate(d.getDate() - 15);
-  const [startDate, setStartDate] = useState(d);
 
   navigation?.setOptions({
     title: country?.Country,
   });
 
+  const queryClient = useQueryClient();
+  const [duration, setDuration] = useState(15);
+
+  var starting_date = new Date();
+  starting_date.setDate(starting_date.getDate() - 15);
+
+  const [startDate, setStartDate] = useState(starting_date);
+
   const formatedStartDate = moment(startDate).format('YYYY-MM-DD');
 
-  async function fetchStats() {
-    return fetch(
-      `${BASE_URL}/total/country/${country?.Slug}/status/confirmed?from=${formatedStartDate}T00:00:00Z&to=2021-08-30T00:00:00Z`,
-    ).then(res => res.json());
-  }
+  const {data} = useCountryBy(country?.Slug, formatedStartDate);
 
-  const onSelectDate = c => {
-    setDuration(c);
-    var d = new Date();
-    d.setDate(d.getDate() - c);
-    setStartDate(d);
-    queryClient.prefetchQuery(['byCountry'], fetchStats);
+  const refetch = () => {
+    queryClient.prefetchQuery(
+      ['byCountry'],
+      fetchStats(country?.Slug, formatedStartDate),
+    );
   };
 
-  const {data} = useQuery('byCountry', fetchStats);
+  const onSelectDate = (diff: number) => {
+    setDuration(diff);
+    var d = new Date();
+    d.setDate(d.getDate() - diff);
+    setStartDate(d);
+
+    refetch();
+  };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainerStyle}>
       <GlobalStats data={country} />
       <Chart data={data} />
       <CaseTypeSelection

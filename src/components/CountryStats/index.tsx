@@ -2,6 +2,7 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 
 import {NavigationService, Util} from '../../utils';
+
 import styles from './styles';
 
 export type Props = {

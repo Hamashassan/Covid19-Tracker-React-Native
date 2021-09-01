@@ -1,19 +1,30 @@
 import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
-import {useQuery} from 'react-query';
-import React from 'react';
+import React, {useEffect} from 'react';
 
-import {GlobalStats, CountryStats, LoaderVIew} from '../../components';
+import {
+  GlobalStats,
+  CountryStats,
+  LoaderVIew,
+  ErrorView,
+} from '../../components';
 import {NavigationService, DataHandler, Util} from '../../utils';
 import {useStore} from '../../store/index';
 import styles from './styles';
+import useGlobal from '../../hooks/useGlobal';
 
 const Dashboard = ({navigation}) => {
-  navigation?.setOptions({
-    headerRight: () => <HeaderRight />,
-  });
+  useEffect(() => {
+    navigation?.setOptions({
+      headerRight: () => <HeaderRight />,
+    });
+  }, []);
 
-  const Global = useStore(state => state?.summary?.data?.Global);
-  const Countries = useStore(state => state?.summary?.data?.Countries);
+  const {data, error, isLoading} = useGlobal();
+  const setSummary = useStore(state => state.setSummary);
+  setSummary(data);
+
+  const Global = useStore(state => state?.summary?.Global);
+  const Countries = useStore(state => state?.summary?.Countries);
 
   const onSeeAllPress = () => {
     NavigationService.navigate('Countries');
@@ -49,8 +60,6 @@ const Dashboard = ({navigation}) => {
   };
 
   const renderContent = () => {
-    // const Countries = useStore(state => state?.summary?.data?.Countries);
-
     return (
       <View style={styles.contentContainer}>
         <GlobalStats data={Global} />
@@ -59,20 +68,13 @@ const Dashboard = ({navigation}) => {
     );
   };
 
-  const {isLoading, error, data} = useQuery('repoData', () =>
-    fetch('https://api.covid19api.com/summary').then(res => res.json()),
-  );
-
-  console.log('data', data);
-
-  const setSummary = useStore(state => state.setSummary);
-  setSummary(data);
-
   if (isLoading) {
     return <LoaderVIew />;
   }
 
-  if (error) return <Text>{`An error has occurred: ${error.message}`}</Text>;
+  if (error) {
+    return <ErrorView message={error?.message} />;
+  }
 
   return (
     <ScrollView

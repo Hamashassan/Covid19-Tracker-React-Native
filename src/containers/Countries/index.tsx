@@ -11,7 +11,7 @@ const Countries = () => {
   const [filteredBy, setfilteredBy] = useState(null);
   const [searchText, setSearchText] = useState('');
 
-  const countries = useStore(state => state.summary.data.Countries);
+  const countries = useStore(state => state.summary.Countries);
 
   const onSelectFilter = val => {
     setSearchText('');
@@ -41,11 +41,11 @@ const Countries = () => {
     <View style={styles.container}>
       <SearchInput onChangeText={onSearchText} onFilterPress={onFilterPress} />
       <FlatList
-        showsVerticalScrollIndicator={false}
+        data={data}
         style={styles.list}
         extraData={filteredData}
-        data={data}
         onEndReachedThreshold={0}
+        showsVerticalScrollIndicator={false}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({item}) => <CountryStats data={item} />}
       />

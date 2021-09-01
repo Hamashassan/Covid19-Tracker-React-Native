@@ -2,12 +2,12 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import styles from './styles';
 import React from 'react';
 
-const defaultData = ['Active', 'Death', 'Recovery'];
+const defaultData: string[] | number[] = ['Active', 'Death', 'Recovery'];
 
 export type Props = {
-  onSelect: (key: string) => void;
+  onSelect: (key: string | number) => void;
   selected?: string | number;
-  data: string[] | number[];
+  data?: string[] | number[];
   postfix?: string;
 };
 
@@ -19,7 +19,7 @@ const CaseTypeSelection: React.FC<Props> = ({
 }) => {
   return (
     <View style={styles.container}>
-      {data.map((item, index) => {
+      {data.map((item: string, index: number) => {
         const style = selected === item ? {borderColor: '#f7f9ff'} : {};
         return (
           <TouchableOpacity

@@ -9,7 +9,7 @@ export default StyleSheet.create({
     paddingTop: 20,
   },
   contentContainerStyle: {
-    paddingBottom: 100,
+    paddingBottom: 40,
   },
   contentContainer: {},
   date: {

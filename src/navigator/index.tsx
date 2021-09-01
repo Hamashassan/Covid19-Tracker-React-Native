@@ -31,7 +31,9 @@ function App() {
       ref={navigatorRef => {
         NavigationService.setTopLevelNavigator(navigatorRef);
       }}>
-      <Stack.Navigator initialRouteName={'Home'} screenOptions={screenOptions}>
+      <Stack.Navigator
+        initialRouteName={'Dashboard'}
+        screenOptions={screenOptions}>
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="Countries" component={Countries} />
         <Stack.Screen name="Country" component={Country} />

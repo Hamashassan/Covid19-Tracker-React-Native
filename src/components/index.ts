@@ -5,6 +5,7 @@ import GlobalStats from './GlobalStats';
 import ModalHeader from './ModalHeader';
 import SearchInput from './SearchInput';
 import LoaderVIew from './LoaderVIew';
+import ErrorView from './ErrorView';
 import Chart from './Chart';
 
 export {
@@ -15,5 +16,6 @@ export {
   SearchInput,
   ModalHeader,
   LoaderVIew,
+  ErrorView,
   Chart,
 };
